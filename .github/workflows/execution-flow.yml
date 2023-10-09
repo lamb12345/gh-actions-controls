@@ -7,31 +7,15 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        run: npm ci
+      - name: get the codes
+        uses: ./.github/workflows/install.yml
       - name: Lint code
         run: npm run lint
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        run: npm ci
+      - name: get the codes
+        uses: ./.github/workflows/install.yml
       - name: Test code
         id: tests
         run: npm run test
@@ -45,16 +29,8 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        run: npm ci
+      - name: get the codes
+        uses: ./.github/workflows/install.yml
       - name: Build website
         id: build-website
         run: npm run build
@@ -66,8 +42,6 @@ jobs:
   deploy:
     needs: build
     uses: ./.github/workflows/deploy.yml
-    with:
-      artifact-name: dist-files
   report:
     needs: [lint, deploy]
     if: failure()
