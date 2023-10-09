@@ -6,6 +6,9 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job-id: [lint]
     steps:
       - name: get the codes
         uses: ./.github/workflows/install.yml
@@ -13,6 +16,9 @@ jobs:
         run: npm run lint
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job-id: [test]
     steps:
       - name: get the codes
         uses: ./.github/workflows/install.yml
@@ -28,6 +34,9 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job-id: [build]
     steps:
       - name: get the codes
         uses: ./.github/workflows/install.yml
